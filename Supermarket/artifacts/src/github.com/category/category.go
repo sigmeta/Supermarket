@@ -33,23 +33,6 @@ type Record struct {
 	History    []HistoryItem `json:History`    //
 }
 
-// 库存
-type Stock struct {
-	ID        string `json:ID`   // ID
-	Name      string `json:Name` // full name
-	StoreID   string `json:StoreID`
-	StoreName string `json:StoreName`
-	Remains   string `json:Remains`   //
-	BarCode   string `json:BarCode`   //
-	MeaUnit   string `json:MeaUnit`   // MeasurementUnit
-	UnitPrice string `json:UnitPrice` // unit-price
-	ShelfLife string `json:ShelfLife` // Quality guarantee period; shelf-life
-	//Supplier  string		 	`json:Supplier`
-	//Place     string        	`json:Place`     	// place of production
-	CreateTime string        `json:CreateTime` // 创建时间
-	History    []HistoryItem `json:History`    //
-}
-
 // 历史item结构
 type HistoryItem struct {
 	TxId   string `json:"txId"`
