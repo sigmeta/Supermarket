@@ -122,7 +122,7 @@ func getRetString(code int, des string) string {
 	return string(b[:])
 }
 
-func (t *UsersChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
+func (a *UsersChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	logger.Info("########### Users Chaincode Init ###########")
 	//val, ok, err := cid.GetAttributeValue(stub, "type")
 	//logger.Info(val,ok,err)
@@ -133,7 +133,7 @@ func (t *UsersChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 }
 
 // Transaction makes payment of X units from A to B
-func (t *UsersChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
+func (a *UsersChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	logger.Info("########### chaincode Invoke ###########")
 
 	function, args := stub.GetFunctionAndParameters()
@@ -141,19 +141,19 @@ func (t *UsersChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	logger.Info("%s%s", "UsersChaincode args=", args)
 	if function == "insert" {
 		// 插入信息
-		return t.insert(stub, args)
+		return a.insert(stub, args)
 	} else if function == "queryByID" {
 		// 根据编号查询
-		return t.queryByID(stub, args)
+		return a.queryByID(stub, args)
 	} else if function == "change" {
 		// 删除记录
-		return t.change(stub, args)
+		return a.change(stub, args)
 	} else if function == "delete" {
 		// 删除记录
-		return t.delete(stub, args)
+		return a.delete(stub, args)
 	} else if function == "login" {
 		// 删除记录
-		return t.login(stub, args)
+		return a.login(stub, args)
 	}
 
 	logger.Errorf("Unknown action, check the first argument. Wrong action: %v", args[0])

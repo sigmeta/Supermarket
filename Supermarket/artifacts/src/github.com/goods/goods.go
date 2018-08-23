@@ -17,42 +17,6 @@ import (
 
 var logger = shim.NewLogger("Goods")
 
-// 每类商品
-type Category struct {
-	ID        string `json:ID`   // ID
-	Name      string `json:Name` // full name
-	StoreID   string `json:StoreID`
-	StoreName string `json:StoreName`
-	Remains   string `json:Remains`   //
-	BarCode   string `json:BarCode`   //
-	MeaUnit   string `json:MeaUnit`   // MeasurementUnit
-	UnitPrice string `json:UnitPrice` // unit-price
-	ShelfLife string `json:ShelfLife` // Quality guarantee period; shelf-life
-	//Supplier  string		 	`json:Supplier`
-	//Place     string        	`json:Place`     	// place of production
-	CreateTime string        `json:CreateTime` // 创建时间
-	History    []HistoryItem `json:History`    //
-}
-
-// 每个商品
-type Commodity struct {
-	ID         string `json:ID`       // ID
-	Name       string `json:Name`     // full name
-	Category   string `json:Category` // category id
-	StoreID    string `json:StoreID`
-	StoreName  string `json:StoreName`
-	Supplier   string `json:Supplier`
-	Place      string `json:Place`      // place of production
-	Date       string `json:Date`       //date of production
-	CreateTime string `json:CreateTime` // 创建时间
-}
-
-// 历史item结构
-type HistoryItem struct {
-	TxId     string   `json:"txId"`
-	Category Category `json:"record"`
-}
-
 // 前缀
 const Cate_Prefix = "Cate_"
 const Comm_Prefix = "Comm_"
@@ -67,35 +31,6 @@ type chaincodeRet struct {
 	Des  string //description
 }
 
-// 根据ID取出记录
-func (a *GoodsChaincode) getRecord(stub shim.ChaincodeStubInterface, prefix string, record_No string) (Record, bool) {
-	var record Record
-	key := Record_Prefix + record_No
-	b, err := stub.GetState(key)
-	if b == nil {
-		return record, false
-	}
-	err = json.Unmarshal(b, &record)
-	if err != nil {
-		return record, false
-	}
-	return record, true
-}
-
-// 保存记录
-func (a *GoodsChaincode) putRecord(stub shim.ChaincodeStubInterface, record Record) ([]byte, bool) {
-
-	byte, err := json.Marshal(record)
-	if err != nil {
-		return nil, false
-	}
-
-	err = stub.PutState(Record_Prefix+record.ID, byte)
-	if err != nil {
-		return nil, false
-	}
-	return byte, true
-}
 
 // GoodsChaincode example Goods Chaincode implementation
 type GoodsChaincode struct {
@@ -133,7 +68,7 @@ func getRetString(code int, des string) string {
 }
 
 func (t *GoodsChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
-	logger.Info("########### GovernmentAffairs Init ###########")
+	logger.Info("########### Goods Chaincode Init ###########")
 	//val, ok, err := cid.GetAttributeValue(stub, "type")
 	//logger.Info(val,ok,err)
 	//res := getRetByte(0, "############"+string(val)+string(err.Error()))
@@ -149,9 +84,9 @@ func (t *GoodsChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	function, args := stub.GetFunctionAndParameters()
 	logger.Info("%s%s", "GoodsChaincode function=", function)
 	logger.Info("%s%s", "GoodsChaincode args=", args)
-	if function == "insert" {
+	if function == "purchase" {
 		// 插入信息
-		return t.insert(stub, args)
+		return t.purchase(stub, args)
 	} else if function == "queryByID" {
 		// 根据编号查询
 		return t.queryByID(stub, args)
@@ -168,20 +103,16 @@ func (t *GoodsChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	return shim.Error(res)
 }
 
-// 加入新记录
-// args: 0 - {Record Object}
-func (a *GoodsChaincode) insert(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+// 进货
+// args: 0 - channel name, 1 - store id, 2- category id, 3- {commodity object}
+func (a *GoodsChaincode) purchase(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	if len(args) != 1 {
+
 		res := getRetString(1, "Chaincode Invoke insert args!=1")
 		return shim.Error(res)
 	}
 
-	var record Record
-	err := json.Unmarshal([]byte(args[0]), &record)
-	if err != nil {
-		res := getRetString(1, "Chaincode Invoke insert unmarshal failed")
-		return shim.Error(res)
-	}
+	newArgs:=[][]byte{[]byte()}
 
 	//根据ID 查找是否ID已存在
 	_, existbl := a.getRecord(stub, record.ID)
