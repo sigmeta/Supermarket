@@ -80,7 +80,9 @@ app.use(function(req, res, next) {
 			// for the downstream code to use
 			req.username = decoded.username;
 			req.orgname = decoded.orgName;
-			logger.debug(util.format('Decoded from JWT token: username - %s, orgname - %s', decoded.username, decoded.orgName));
+			req.password = decoded.password;
+			logger.debug(util.format('Decoded from JWT token: username - %s, orgname - %s, password - %s',
+				decoded.username, decoded.orgName, decoded.password));
 			return next();
 		}
 	});
@@ -109,9 +111,11 @@ function getErrorMessage(field) {
 app.post('/users', async function(req, res) {
 	var username = req.body.username;
 	var orgName = req.body.orgName;
+	var password = req.body.password;
 	logger.debug('End point : /users');
 	logger.debug('User name : ' + username);
 	logger.debug('Org name  : ' + orgName);
+    logger.debug('Password  : ' + password);
 	if (!username) {
 		res.json(getErrorMessage('\'username\''));
 		return;
@@ -120,12 +124,18 @@ app.post('/users', async function(req, res) {
 		res.json(getErrorMessage('\'orgName\''));
 		return;
 	}
+    if (!password) {
+        res.json(getErrorMessage('\'password\''));
+        return;
+    }
 	var token = jwt.sign({
 		exp: Math.floor(Date.now() / 1000) + parseInt(hfc.getConfigSetting('jwt_expiretime')),
 		username: username,
-		orgName: orgName
+		orgName: orgName,
+		password: password
 	}, app.get('secret'));
-	let response = await helper.getRegisteredUser(username, orgName, true);
+	let response = await helper.loginUser(username, orgName, password, true);
+    //let response = await helper.getRegisteredUser(username, orgName, password, true);
 	logger.debug('-- returned from registering the username %s for organization %s',username,orgName);
 	if (response && typeof response !== 'string') {
 		logger.debug('Successfully registered the username %s for organization %s',username,orgName);
@@ -137,6 +147,48 @@ app.post('/users', async function(req, res) {
 	}
 
 });
+
+app.post('/register', async function(req, res) {
+    var username = req.body.username;
+    var orgName = req.body.orgName;
+    var password = req.body.password;
+    logger.debug('End point : /users');
+    logger.debug('User name : ' + username);
+    logger.debug('Org name  : ' + orgName);
+    logger.debug('Password  : ' + password);
+    if (!username) {
+        res.json(getErrorMessage('\'username\''));
+        return;
+    }
+    if (!orgName) {
+        res.json(getErrorMessage('\'orgName\''));
+        return;
+    }
+    if (!password) {
+        res.json(getErrorMessage('\'password\''));
+        return;
+    }
+    var token = jwt.sign({
+        exp: Math.floor(Date.now() / 1000) + parseInt(hfc.getConfigSetting('jwt_expiretime')),
+        username: username,
+        orgName: orgName,
+        password: password
+    }, app.get('secret'));
+
+    let response = await helper.getRegisteredUser(username, orgName, password, true);
+    logger.debug('-- returned from registering the username %s for organization %s',username,orgName);
+    if (response && typeof response !== 'string') {
+        logger.debug('Successfully registered the username %s for organization %s',username,orgName);
+        response.token = token;
+        res.json(response);
+    } else {
+        logger.debug('Failed to register the username %s for organization %s with::%s',username,orgName,response);
+        res.json({success: false, message: response});
+    }
+
+});
+
+
 // Create Channel
 app.post('/channels', async function(req, res) {
 	logger.info('<<<<<<<<<<<<<<<<< C R E A T E  C H A N N E L >>>>>>>>>>>>>>>>>');
