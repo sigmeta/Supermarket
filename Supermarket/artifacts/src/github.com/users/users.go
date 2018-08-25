@@ -146,13 +146,13 @@ func (a *UsersChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		// 根据编号查询
 		return a.queryByID(stub, args)
 	} else if function == "change" {
-		// 删除记录
+		// 修改记录
 		return a.change(stub, args)
 	} else if function == "delete" {
 		// 删除记录
 		return a.delete(stub, args)
 	} else if function == "login" {
-		// 删除记录
+		// 登录
 		return a.login(stub, args)
 	}
 

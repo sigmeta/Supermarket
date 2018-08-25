@@ -27,6 +27,7 @@ type Record struct {
 	MeaUnit   string `json:MeaUnit`   // MeasurementUnit
 	UnitPrice string `json:UnitPrice` // unit-price
 	ShelfLife string `json:ShelfLife` // Quality guarantee period; shelf-life
+	Stock	  string `json:Stock`     //Stock remains
 	//Supplier  string		 	`json:Supplier`
 	//Place     string        	`json:Place`     	// place of production
 	CreateTime string        `json:CreateTime` // 创建时间
@@ -190,16 +191,13 @@ func (a *CategoryChaincode) insert(stub shim.ChaincodeStubInterface, args []stri
 	}
 	//13位时间戳
 	record.CreateTime = strconv.FormatInt(time.Now().Unix(), 10)
-
+	record.Stock = "0"
 	// 保存记录
 	_, bl := a.putRecord(stub, CateStoreKey, record)
 	if !bl {
 		res := getRetString(1, "Chaincode Invoke insert put record failed")
 		return shim.Error(res)
 	}
-
-	//同时初始化库存为0
-	a.insertStock(stub, []string{record.ID, record.StoreID, "0"})
 
 	res := getRetByte(0, "invoke insert success")
 	return shim.Success(res)
@@ -356,7 +354,7 @@ func (a *CategoryChaincode) delete(stub shim.ChaincodeStubInterface, args []stri
 	}
 
 	//根据ID 查找是否ID已存在
-	_, existbl := a.getRecord(stub, CateStoreKey)
+	record, existbl := a.getRecord(stub, CateStoreKey)
 	if !existbl {
 		res := getRetString(1, "Chaincode Invoke delete failed : delete without existed record ")
 		return shim.Error(res)
@@ -368,8 +366,12 @@ func (a *CategoryChaincode) delete(stub shim.ChaincodeStubInterface, args []stri
 		return shim.Error(res)
 	}
 
-	res := getRetByte(0, "invoke delete success")
-	return shim.Success(res)
+	b, err := json.Marshal(record)
+	if err != nil {
+		res := getRetString(1, "CategoryChaincode Marshal delete recordList error")
+		return shim.Error(res)
+	}
+	return shim.Success(b)
 }
 
 // insert stock
@@ -411,19 +413,20 @@ func (a *CategoryChaincode) changeStock(stub shim.ChaincodeStubInterface, args [
 		return shim.Error(res)
 	}
 
-	CateStoreKey, err := stub.CreateCompositeKey(IndexName, []string{Stock_Prefix + args[0], args[1]})
+	CateStoreKey, err := stub.CreateCompositeKey(IndexName, []string{Record_Prefix + args[0], args[1]})
 	if err != nil {
 		res := getRetString(1, "Chaincode Invoke changeStock: CreateCompositeKey failed")
 		return shim.Error(res)
 	}
 
-	//查找是否key已存在
-	stock, err := stub.GetState(CateStoreKey)
-	if err != nil {
-		res := getRetString(1, "Chaincode Invoke changeStock failed : you are changing an nonexistent record ")
+	//根据ID 查找是否ID已存在
+	record, existbl := a.getRecord(stub, CateStoreKey)
+	if !existbl {
+		res := getRetString(1, "Chaincode Invoke changeStock failed : change without existed record")
 		return shim.Error(res)
 	}
-	stockFloat, err := strconv.ParseFloat(string(stock), 32)
+
+	stockFloat, err := strconv.ParseFloat(string(record.Stock), 32)
 	if err != nil {
 		res := getRetString(1, "Chaincode Invoke changeStock failed : cannot parse stock to float")
 		return shim.Error(res)
@@ -442,9 +445,12 @@ func (a *CategoryChaincode) changeStock(stub shim.ChaincodeStubInterface, args [
 		return shim.Error(res)
 	}
 
-	err = stub.PutState(CateStoreKey, []byte(strconv.FormatFloat(stockFloat, 'f', -1, 32)))
-	if err != nil {
-		res := getRetString(1, "Chaincode Invoke changeStock failed")
+	record.Stock = strconv.FormatFloat(stockFloat, 'f', -1, 32)
+
+	// 保存记录
+	_, bl := a.putRecord(stub, CateStoreKey, record)
+	if !bl {
+		res := getRetString(1, "Chaincode Invoke changeStock put record failed")
 		return shim.Error(res)
 	}
 

@@ -21,7 +21,7 @@ var logger = shim.NewLogger("Commodity")
 type Record struct {
 	ID         string `json:ID`        // ID
 	Name       string `json:Name`      // full name
-	Commodity  string `json:Commodity` // category id
+	Category   string `json:Category` // category id
 	StoreID    string `json:StoreID`
 	StoreName  string `json:StoreName`
 	Supplier   string `json:Supplier`
@@ -246,7 +246,7 @@ func (a *CommodityChaincode) delete(stub shim.ChaincodeStubInterface, args []str
 	}
 
 	//根据ID 查找是否ID已存在
-	_, existbl := a.getRecord(stub, Record_Prefix+args[0])
+	record, existbl := a.getRecord(stub, Record_Prefix+args[0])
 	if !existbl {
 		res := getRetString(1, "Chaincode Invoke delete failed : delete without existed record ")
 		return shim.Error(res)
@@ -258,8 +258,12 @@ func (a *CommodityChaincode) delete(stub shim.ChaincodeStubInterface, args []str
 		return shim.Error(res)
 	}
 
-	res := getRetByte(0, "invoke delete success")
-	return shim.Success(res)
+	b, err := json.Marshal(record)
+	if err != nil {
+		res := getRetString(1, "CommodityChaincode Marshal record error")
+		return shim.Error(res)
+	}
+	return shim.Success(b)
 }
 
 func main() {
