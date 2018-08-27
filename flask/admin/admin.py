@@ -74,14 +74,14 @@ def purchase():
 #处理注册
 @admin_bp.route('/register', methods=['POST'])
 def register():
-    user = request.form['username']
+    user = request.form['name']
     pwd = request.form['password']
     org = request.form['orgName']
     res = requests.post("http://localhost:4000/register",
                         "username=%s&orgName=%s&password=%s" % (user, org, pwd),
                         headers={"content-type": "application/x-www-form-urlencoded"})
     if res.status_code != 200:
-        return render_template("error.html", message="status_code: " + res.status_code + res.text)
+        return render_template("error.html", message="status_code: " + str(res.status_code) + res.text)
     restext = json.loads(res.text)
     print(restext)
     if restext['success'] != True:

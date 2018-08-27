@@ -1,0 +1,195 @@
+version: 1.0.0
+peers:
+  peer1.store1.aliyunbaas.com:31111:
+    url: grpcs://peer1.store1.aliyunbaas.com:31111
+    tlsCACerts:
+      pem: |
+        -----BEGIN CERTIFICATE-----
+        MIICITCCAcegAwIBAgIUFjQYJ6RHHWmEMTNJ1NoMEEDgG2gwCgYIKoZIzj0EAwIw
+        bTELMAkGA1UEBhMCQ04xETAPBgNVBAgTCFpoZWppYW5nMREwDwYDVQQHEwhIYW5n
+        emhvdTEWMBQGA1UEChMNQWxpYmFiYSBDbG91ZDEgMB4GA1UEAxMXRmFicmljLUNB
+        IFRMUyBSb290IENlcnQwHhcNMTgwODIzMDkwNDAwWhcNMzgwODE4MDkwNDAwWjBt
+        MQswCQYDVQQGEwJDTjERMA8GA1UECBMIWmhlamlhbmcxETAPBgNVBAcTCEhhbmd6
+        aG91MRYwFAYDVQQKEw1BbGliYWJhIENsb3VkMSAwHgYDVQQDExdGYWJyaWMtQ0Eg
+        VExTIFJvb3QgQ2VydDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABOKpplWTmotq
+        CDg5o7ZMEET3Uz5Rkroz7Uso2i9cp4hZuny1HJv3wjaMbmSf7O/hVWkHl52uZCav
+        zsE1zwKtnLCjRTBDMA4GA1UdDwEB/wQEAwIBBjASBgNVHRMBAf8ECDAGAQH/AgEB
+        MB0GA1UdDgQWBBTRyjdMT0UgRtFaY2qRkf3sPjAZKTAKBggqhkjOPQQDAgNIADBF
+        AiEA4ET1VD4YXdMPIb+YiN455ctC2VDKNxiXQSCQDIxY3jACIF8KUzN/hZhSlhHr
+        Gh8YRuEv4xmNmhtvc6H7xny7hhCZ
+        -----END CERTIFICATE-----
+    grpcOptions:
+      allow-insecure: false
+      fail-fast: false
+      keep-alive-permit: false
+      keep-alive-time: 0s
+      keep-alive-timeout: 20s
+      ssl-target-name-override: peer1.store1.aliyunbaas.com
+    eventUrl: grpcs://peer1.store1.aliyunbaas.com:31113
+  peer2.store1.aliyunbaas.com:31121:
+    url: grpcs://peer2.store1.aliyunbaas.com:31121
+    tlsCACerts:
+      pem: |
+        -----BEGIN CERTIFICATE-----
+        MIICITCCAcegAwIBAgIUFjQYJ6RHHWmEMTNJ1NoMEEDgG2gwCgYIKoZIzj0EAwIw
+        bTELMAkGA1UEBhMCQ04xETAPBgNVBAgTCFpoZWppYW5nMREwDwYDVQQHEwhIYW5n
+        emhvdTEWMBQGA1UEChMNQWxpYmFiYSBDbG91ZDEgMB4GA1UEAxMXRmFicmljLUNB
+        IFRMUyBSb290IENlcnQwHhcNMTgwODIzMDkwNDAwWhcNMzgwODE4MDkwNDAwWjBt
+        MQswCQYDVQQGEwJDTjERMA8GA1UECBMIWmhlamlhbmcxETAPBgNVBAcTCEhhbmd6
+        aG91MRYwFAYDVQQKEw1BbGliYWJhIENsb3VkMSAwHgYDVQQDExdGYWJyaWMtQ0Eg
+        VExTIFJvb3QgQ2VydDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABOKpplWTmotq
+        CDg5o7ZMEET3Uz5Rkroz7Uso2i9cp4hZuny1HJv3wjaMbmSf7O/hVWkHl52uZCav
+        zsE1zwKtnLCjRTBDMA4GA1UdDwEB/wQEAwIBBjASBgNVHRMBAf8ECDAGAQH/AgEB
+        MB0GA1UdDgQWBBTRyjdMT0UgRtFaY2qRkf3sPjAZKTAKBggqhkjOPQQDAgNIADBF
+        AiEA4ET1VD4YXdMPIb+YiN455ctC2VDKNxiXQSCQDIxY3jACIF8KUzN/hZhSlhHr
+        Gh8YRuEv4xmNmhtvc6H7xny7hhCZ
+        -----END CERTIFICATE-----
+    grpcOptions:
+      allow-insecure: false
+      fail-fast: false
+      keep-alive-permit: false
+      keep-alive-time: 0s
+      keep-alive-timeout: 20s
+      ssl-target-name-override: peer2.store1.aliyunbaas.com
+    eventUrl: grpcs://peer2.store1.aliyunbaas.com:31123
+organizations:
+  store1MSP:
+    peers:
+    - peer1.store1.aliyunbaas.com:31111
+    - peer2.store1.aliyunbaas.com:31121
+    mspid: store1MSP
+    cryptoPath: /tmp/msp
+    certificateAuthorities:
+    - ca1.store1.aliyunbaas.com
+orderers:
+  orderer1:
+    url: grpcs://orderer1.supermarket.aliyunbaas.com:31010
+    tlsCACerts:
+      pem: |
+        -----BEGIN CERTIFICATE-----
+        MIICIDCCAcegAwIBAgIUIst0G/HjhkvqRqCK2JeQaeQfz5IwCgYIKoZIzj0EAwIw
+        bTELMAkGA1UEBhMCQ04xETAPBgNVBAgTCFpoZWppYW5nMREwDwYDVQQHEwhIYW5n
+        emhvdTEUMBIGA1UEChMLc3VwZXJtYXJrZXQxIjAgBgNVBAMTGXN1cGVybWFya2V0
+        IFRMUyBSb290IENlcnQwHhcNMTgwODIzMDkwODAwWhcNMzgwODE4MDkwODAwWjBt
+        MQswCQYDVQQGEwJDTjERMA8GA1UECBMIWmhlamlhbmcxETAPBgNVBAcTCEhhbmd6
+        aG91MRQwEgYDVQQKEwtzdXBlcm1hcmtldDEiMCAGA1UEAxMZc3VwZXJtYXJrZXQg
+        VExTIFJvb3QgQ2VydDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABA9Um7jKQC3O
+        QE5v4s7f0DZT0MbyR+M6fOf572eV7Tx5whF7m/9l0EOuRqz+pGdnDIAYiMijEfoI
+        3aZnKwMteQ6jRTBDMA4GA1UdDwEB/wQEAwIBBjASBgNVHRMBAf8ECDAGAQH/AgEB
+        MB0GA1UdDgQWBBS+nqcCmTl7NjUPH+VwEbrozXFJKTAKBggqhkjOPQQDAgNHADBE
+        AiAsQW9E/7CLmBn0sZG4jFc6zH3nGgMsibhVO4x5zuzMfQIgDTrK1qDmEOxuGS46
+        1TayL34nEV8DQabQ4YjaYCmt5Po=
+        -----END CERTIFICATE-----
+    grpcOptions:
+      allow-insecure: false
+      fail-fast: false
+      keep-alive-permit: false
+      keep-alive-time: 0s
+      keep-alive-timeout: 20s
+      ssl-target-name-override: orderer1.supermarket.aliyunbaas.com
+  orderer2:
+    url: grpcs://orderer2.supermarket.aliyunbaas.com:31020
+    tlsCACerts:
+      pem: |
+        -----BEGIN CERTIFICATE-----
+        MIICIDCCAcegAwIBAgIUIst0G/HjhkvqRqCK2JeQaeQfz5IwCgYIKoZIzj0EAwIw
+        bTELMAkGA1UEBhMCQ04xETAPBgNVBAgTCFpoZWppYW5nMREwDwYDVQQHEwhIYW5n
+        emhvdTEUMBIGA1UEChMLc3VwZXJtYXJrZXQxIjAgBgNVBAMTGXN1cGVybWFya2V0
+        IFRMUyBSb290IENlcnQwHhcNMTgwODIzMDkwODAwWhcNMzgwODE4MDkwODAwWjBt
+        MQswCQYDVQQGEwJDTjERMA8GA1UECBMIWmhlamlhbmcxETAPBgNVBAcTCEhhbmd6
+        aG91MRQwEgYDVQQKEwtzdXBlcm1hcmtldDEiMCAGA1UEAxMZc3VwZXJtYXJrZXQg
+        VExTIFJvb3QgQ2VydDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABA9Um7jKQC3O
+        QE5v4s7f0DZT0MbyR+M6fOf572eV7Tx5whF7m/9l0EOuRqz+pGdnDIAYiMijEfoI
+        3aZnKwMteQ6jRTBDMA4GA1UdDwEB/wQEAwIBBjASBgNVHRMBAf8ECDAGAQH/AgEB
+        MB0GA1UdDgQWBBS+nqcCmTl7NjUPH+VwEbrozXFJKTAKBggqhkjOPQQDAgNHADBE
+        AiAsQW9E/7CLmBn0sZG4jFc6zH3nGgMsibhVO4x5zuzMfQIgDTrK1qDmEOxuGS46
+        1TayL34nEV8DQabQ4YjaYCmt5Po=
+        -----END CERTIFICATE-----
+    grpcOptions:
+      allow-insecure: false
+      fail-fast: false
+      keep-alive-permit: false
+      keep-alive-time: 0s
+      keep-alive-timeout: 20s
+      ssl-target-name-override: orderer2.supermarket.aliyunbaas.com
+  orderer3:
+    url: grpcs://orderer3.supermarket.aliyunbaas.com:31030
+    tlsCACerts:
+      pem: |
+        -----BEGIN CERTIFICATE-----
+        MIICIDCCAcegAwIBAgIUIst0G/HjhkvqRqCK2JeQaeQfz5IwCgYIKoZIzj0EAwIw
+        bTELMAkGA1UEBhMCQ04xETAPBgNVBAgTCFpoZWppYW5nMREwDwYDVQQHEwhIYW5n
+        emhvdTEUMBIGA1UEChMLc3VwZXJtYXJrZXQxIjAgBgNVBAMTGXN1cGVybWFya2V0
+        IFRMUyBSb290IENlcnQwHhcNMTgwODIzMDkwODAwWhcNMzgwODE4MDkwODAwWjBt
+        MQswCQYDVQQGEwJDTjERMA8GA1UECBMIWmhlamlhbmcxETAPBgNVBAcTCEhhbmd6
+        aG91MRQwEgYDVQQKEwtzdXBlcm1hcmtldDEiMCAGA1UEAxMZc3VwZXJtYXJrZXQg
+        VExTIFJvb3QgQ2VydDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABA9Um7jKQC3O
+        QE5v4s7f0DZT0MbyR+M6fOf572eV7Tx5whF7m/9l0EOuRqz+pGdnDIAYiMijEfoI
+        3aZnKwMteQ6jRTBDMA4GA1UdDwEB/wQEAwIBBjASBgNVHRMBAf8ECDAGAQH/AgEB
+        MB0GA1UdDgQWBBS+nqcCmTl7NjUPH+VwEbrozXFJKTAKBggqhkjOPQQDAgNHADBE
+        AiAsQW9E/7CLmBn0sZG4jFc6zH3nGgMsibhVO4x5zuzMfQIgDTrK1qDmEOxuGS46
+        1TayL34nEV8DQabQ4YjaYCmt5Po=
+        -----END CERTIFICATE-----
+    grpcOptions:
+      allow-insecure: false
+      fail-fast: false
+      keep-alive-permit: false
+      keep-alive-time: 0s
+      keep-alive-timeout: 20s
+      ssl-target-name-override: orderer3.supermarket.aliyunbaas.com
+name: Aliyun-Baas-Config
+description: The network generated by aliyun BaaS.
+client:
+  organization: store1MSP
+  logging:
+    level: info
+  credentialStore:
+    path: /tmp/msp/signcerts
+    cryptoStore:
+      path: /tmp/msp
+  BCCSP:
+    security:
+      default:
+        provider: SW
+      level: 256
+      softVerify: true
+      enabled: true
+      hashAlgorithm: SHA2
+channels:
+  first-channel:
+    peers:
+      peer1.store1.aliyunbaas.com:31111:
+        chaincodeQuery: true
+        endorsingPeer: true
+        eventSource: true
+        ledgerQuery: true
+      peer2.store1.aliyunbaas.com:31121:
+        chaincodeQuery: true
+        endorsingPeer: true
+        eventSource: true
+        ledgerQuery: true
+    orderers:
+    - orderer1
+    - orderer2
+    - orderer3
+certificateAuthorities:
+  ca1.store1.aliyunbaas.com:
+    url: https://ca1.store1.aliyunbaas.com:31154
+    tlsCACerts:
+      pem:
+      - |
+        -----BEGIN CERTIFICATE-----
+        MIICITCCAcegAwIBAgIUFjQYJ6RHHWmEMTNJ1NoMEEDgG2gwCgYIKoZIzj0EAwIw
+        bTELMAkGA1UEBhMCQ04xETAPBgNVBAgTCFpoZWppYW5nMREwDwYDVQQHEwhIYW5n
+        emhvdTEWMBQGA1UEChMNQWxpYmFiYSBDbG91ZDEgMB4GA1UEAxMXRmFicmljLUNB
+        IFRMUyBSb290IENlcnQwHhcNMTgwODIzMDkwNDAwWhcNMzgwODE4MDkwNDAwWjBt
+        MQswCQYDVQQGEwJDTjERMA8GA1UECBMIWmhlamlhbmcxETAPBgNVBAcTCEhhbmd6
+        aG91MRYwFAYDVQQKEw1BbGliYWJhIENsb3VkMSAwHgYDVQQDExdGYWJyaWMtQ0Eg
+        VExTIFJvb3QgQ2VydDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABOKpplWTmotq
+        CDg5o7ZMEET3Uz5Rkroz7Uso2i9cp4hZuny1HJv3wjaMbmSf7O/hVWkHl52uZCav
+        zsE1zwKtnLCjRTBDMA4GA1UdDwEB/wQEAwIBBjASBgNVHRMBAf8ECDAGAQH/AgEB
+        MB0GA1UdDgQWBBTRyjdMT0UgRtFaY2qRkf3sPjAZKTAKBggqhkjOPQQDAgNIADBF
+        AiEA4ET1VD4YXdMPIb+YiN455ctC2VDKNxiXQSCQDIxY3jACIF8KUzN/hZhSlhHr
+        Gh8YRuEv4xmNmhtvc6H7xny7hhCZ
+        -----END CERTIFICATE-----
+    caName: client

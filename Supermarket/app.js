@@ -56,12 +56,12 @@ app.set('secret', 'thisismysecret');
 app.use(expressJWT({
 	secret: 'thisismysecret'
 }).unless({
-	path: ['/users']
+	path: ['/users','/register']
 }));
 app.use(bearerToken());
 app.use(function(req, res, next) {
 	logger.debug(' ------>>>>>> new request for %s',req.originalUrl);
-	if (req.originalUrl.indexOf('/users') >= 0) {
+	if (req.originalUrl.indexOf('/users') >= 0 || req.originalUrl.indexOf('/register') >= 0) {
 		return next();
 	}
 
@@ -152,7 +152,7 @@ app.post('/register', async function(req, res) {
     var username = req.body.username;
     var orgName = req.body.orgName;
     var password = req.body.password;
-    logger.debug('End point : /users');
+    logger.debug('End point : /register');
     logger.debug('User name : ' + username);
     logger.debug('Org name  : ' + orgName);
     logger.debug('Password  : ' + password);
