@@ -406,7 +406,7 @@ func (a *CategoryChaincode) insertStock(stub shim.ChaincodeStubInterface, args [
 }
 
 // change stock
-// args: 0 - ID, 1 - Store ID, 2 - quantity, 3 - "add" or "reduce"
+// args: 0 - Category ID, 1 - Store ID, 2 - quantity, 3 - "add" or "reduce"
 func (a *CategoryChaincode) changeStock(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	if len(args) != 4 {
 		res := getRetString(1, "Chaincode Invoke changeStock args!=1")

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Amaze UI Admin index Examples</title>
+    <title>无人超市</title>
     <meta name="description" content="这是一个 index 页面">
     <meta name="keywords" content="index">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -110,7 +110,54 @@
             </div>
 
             <!-- 菜单 -->
-            {% block menu %}{% endblock %}
+            <ul class="sidebar-nav">
+                <li class="sidebar-nav-link">
+                    <a href="/admin" {% if request.endpoint=="admin.index" %}class="active"{% endif %}>
+                        <i class="am-icon-home sidebar-nav-link-logo"></i> 首页
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="/admin/purchase" {% if request.endpoint=="admin.purchase" %}class="active"{% endif %}>
+                        <i class="am-icon-table sidebar-nav-link-logo"></i> 进货
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="#">
+                        <i class="am-icon-calendar sidebar-nav-link-logo"></i> Null
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="#">
+                        <i class="am-icon-wpforms sidebar-nav-link-logo"></i> Null
+
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="#">
+                        <i class="am-icon-bar-chart sidebar-nav-link-logo"></i> Null
+
+                    </a>
+                </li>
+
+                <li class="sidebar-nav-heading">Page<span class="sidebar-nav-heading-info"> 常用页面</span></li>
+                <li class="sidebar-nav-link">
+                    <a href="/admin/signup">
+                        <i class="am-icon-clone sidebar-nav-link-logo"></i> 注册
+                        <span class="am-badge am-badge-secondary sidebar-nav-link-logo-ico am-round am-fr am-margin-right-sm">6</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="/admin/login">
+                        <i class="am-icon-key sidebar-nav-link-logo"></i> 登录
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="/admin/error">
+                        <i class="am-icon-tv sidebar-nav-link-logo"></i> 404错误
+                    </a>
+                </li>
+
+            </ul>
 
         </div>
 

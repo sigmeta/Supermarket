@@ -1,55 +1,5 @@
 {% extends 'base.html' %}
 
-{% block menu %}
-    <ul class="sidebar-nav">
-                <li class="sidebar-nav-link">
-                    <a href="/admin">
-                        <i class="am-icon-home sidebar-nav-link-logo"></i> 首页
-                    </a>
-                </li>
-                <li class="sidebar-nav-link">
-                    <a href="/admin/purchase" class="active">
-                        <i class="am-icon-table sidebar-nav-link-logo"></i> 进货
-                    </a>
-                </li>
-                <li class="sidebar-nav-link">
-                    <a href="#">
-                        <i class="am-icon-calendar sidebar-nav-link-logo"></i> Null
-                    </a>
-                </li>
-                <li class="sidebar-nav-link">
-                    <a href="#">
-                        <i class="am-icon-wpforms sidebar-nav-link-logo"></i> Null
-
-                    </a>
-                </li>
-                <li class="sidebar-nav-link">
-                    <a href="#">
-                        <i class="am-icon-bar-chart sidebar-nav-link-logo"></i> Null
-
-                    </a>
-                </li>
-
-                <li class="sidebar-nav-heading">Page<span class="sidebar-nav-heading-info"> 常用页面</span></li>
-                <li class="sidebar-nav-link">
-                    <a href="/admin/signup">
-                        <i class="am-icon-clone sidebar-nav-link-logo"></i> 注册
-                        <span class="am-badge am-badge-secondary sidebar-nav-link-logo-ico am-round am-fr am-margin-right-sm">6</span>
-                    </a>
-                </li>
-                <li class="sidebar-nav-link">
-                    <a href="/admin/login">
-                        <i class="am-icon-key sidebar-nav-link-logo"></i> 登录
-                    </a>
-                </li>
-                <li class="sidebar-nav-link">
-                    <a href="/admin/error">
-                        <i class="am-icon-tv sidebar-nav-link-logo"></i> 404错误
-                    </a>
-                </li>
-
-            </ul>
-{% endblock %}
 
 
 {% block content %}
@@ -81,7 +31,7 @@
                             </div>
                             <div class="widget-body am-fr">
 
-                                <form class="am-form tpl-form-border-form tpl-form-border-br" method="post" action="/admin/insert_commodity">
+                                <form class="am-form tpl-form-border-form tpl-form-border-br" method="post" action="/admin/purchase_commodity">
                                     <div class="am-form-group">
                                         <label for="user-name" class="am-u-sm-3 am-form-label">商品ID <span class="tpl-form-line-small-title">Commodity ID</span></label>
                                         <div class="am-u-sm-9">
@@ -168,6 +118,20 @@
                                         <label for="user-name" class="am-u-sm-3 am-form-label">商品ID <span class="tpl-form-line-small-title">Commodity ID</span></label>
                                         <div class="am-u-sm-9">
                                             <input type="text" class="tpl-form-input" name="ID" pattern="^[0-9]+$" placeholder="">
+                                            <small></small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label">商品类ID <span class="tpl-form-line-small-title">Category ID</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" name="Category" pattern="^[0-9]+$" placeholder="">
+                                            <small></small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label">超市ID <span class="tpl-form-line-small-title">Store ID</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" name="StoreID" pattern="^[0-9]+$" placeholder="">
                                             <small></small>
                                         </div>
                                     </div>
