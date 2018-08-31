@@ -4,14 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Amaze UI Admin index Examples</title>
+    <title>无人超市-登录</title>
     <meta name="description" content="这是一个 index 页面">
     <meta name="keywords" content="index">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <link rel="icon" type="image/png" href="/static/i/favicon.png">
-    <link rel="apple-touch-icon-precomposed" href="/static/i/app-icon72x72@2x.png">
+    <link rel="icon" type="image/png" href="/static/i/favicon.png'">
+    <link rel="apple-touch-icon-precomposed" href="/static/i/app-icon72x72@2x.png'">
     <meta name="apple-mobile-web-app-title" content="Amaze UI" />
     <link rel="stylesheet" href="/static/css/amazeui.min.css" />
     <link rel="stylesheet" href="/static/css/amazeui.datatables.min.css" />
@@ -39,35 +39,31 @@
         </div>
         <div class="tpl-login">
             <div class="tpl-login-content">
-                <div class="tpl-login-title">注册用户</div>
-                <span class="tpl-login-content-info">
-                  创建一个新的用户
-              </span>
+                <div class="tpl-login-logo">
+
+                </div>
 
 
-                <form class="am-form tpl-form-line-form" action="/admin/register" method="post">
-                    <div class="am-form-group" style="display: none">
-                        <input type="text" class="tpl-form-input" id="user-name" placeholder="邮箱">
+
+                <form class="am-form tpl-form-line-form" method="POST" action="/user/login">
+                    <div class="am-form-group">
+                        <input type="text" class="tpl-form-input" name="username" placeholder="请输入账号">
 
                     </div>
-
                     <div class="am-form-group">
-                        <input type="text" class="tpl-form-input" name="name" placeholder="用户名">
+                        <input type="text" class="tpl-form-input" name="orgName" placeholder="请输入组织">
+
                     </div>
 
                     <div class="am-form-group">
                         <input type="password" class="tpl-form-input" name="password" placeholder="请输入密码">
-                    </div>
 
-                    <div class="am-form-group">
-                        <input type="password" class="tpl-form-input" name="password" placeholder="再次输入密码">
                     </div>
-
                     <div class="am-form-group tpl-login-remember-me">
                         <input id="remember-me" type="checkbox">
                         <label for="remember-me">
        
-                        我已阅读并同意 <a href="javascript:;">《用户注册协议》</a> 
+                        记住密码
                          </label>
 
                     </div>
@@ -76,6 +72,16 @@
                     <div class="am-form-group">
 
                         <button type="submit" class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn">提交</button>
+
+
+                    </div>
+                    <div class="am-form-group">
+
+
+                        <a href="{{ url_for('user.signup') }}">
+                             <button type="button" class="am-btn am-btn-primary  am-btn-block tpl-login-btn" style="background-color: #a14c09">注册</button>
+                        </a>
+
 
                     </div>
                 </form>

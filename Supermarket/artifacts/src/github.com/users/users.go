@@ -185,6 +185,8 @@ func (a *UsersChaincode) insert(stub shim.ChaincodeStubInterface, args []string)
 	//13位时间戳
 	record.CreateTime = strconv.FormatInt(time.Now().Unix(), 10)
 
+	record.VIP = VIPLevel0
+	record.Cost = "0"
 	// 保存记录
 	_, bl := a.putRecord(stub, Record_Prefix+record.ID, record)
 	if !bl {

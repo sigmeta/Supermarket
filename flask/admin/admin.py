@@ -1,4 +1,4 @@
-from flask import (Blueprint, flash, g, redirect, render_template, request, session, url_for, make_response, get_flashed_messages)
+from flask import (Blueprint, flash, g, redirect, render_template, request, session, url_for, make_response)
 import os
 import json
 import requests
@@ -9,6 +9,8 @@ admin_bp = Blueprint('admin', __name__, template_folder='templates',
 
 peers=["peer0.org1.example.com","peer1.org1.example.com"]
 channel_name="mychannel"
+commodity_cc="commodity"
+category_cc="category"
 #channel_name="first-channel"
 
 

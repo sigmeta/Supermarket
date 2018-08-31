@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+        <div class="tpl-content-wrapper">
+
+            <div class="container-fluid am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                        <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 货物 <small>无人超市</small></div>
+                        <p class="page-header-description">区块链无人超市</p>
+                    </div>
+                    <div class="am-u-lg-3 tpl-index-settings-button">
+                        <button type="button" class="page-header-button"><span class="am-icon-paint-brush"></span> 设置</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row-content am-cf">
+                <div class="row">
+                    <!-- 进货 -->
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">进货登记</div>
+                                <div class="widget-function am-fr">
+                                    <a href="javascript:;" class="am-icon-cog"></a>
+                                </div>
+                            </div>
+                            <div class="widget-body am-fr">
+
+                                <form class="am-form tpl-form-border-form tpl-form-border-br" method="post" action="/admin/purchase_commodity">
+                                    <div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label">商品ID <span class="tpl-form-line-small-title">Commodity ID</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" name="ID" pattern="^[0-9]+$" placeholder="">
+                                            <small></small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label">商品名称 <span class="tpl-form-line-small-title">Name</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" name="Name" placeholder="">
+                                            <small></small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label">商品类ID <span class="tpl-form-line-small-title">Category ID</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" name="Category" pattern="^[0-9]+$" placeholder="">
+                                            <small></small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="user-email" class="am-u-sm-3 am-form-label">超市ID <span class="tpl-form-line-small-title">Store ID</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="am-form-field tpl-form-no-bg" name="StoreID" pattern="^[0-9]+$" placeholder="" >
+                                            <small></small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="user-email" class="am-u-sm-3 am-form-label">超市名称 <span class="tpl-form-line-small-title">Store Name</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="am-form-field tpl-form-no-bg" name="StoreName" placeholder="" >
+                                            <small></small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="user-email" class="am-u-sm-3 am-form-label">供货商 <span class="tpl-form-line-small-title">Supplier</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="am-form-field tpl-form-no-bg" name="Supplier" placeholder="" >
+                                            <small></small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="user-email" class="am-u-sm-3 am-form-label">产地 <span class="tpl-form-line-small-title">Place of production</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="am-form-field tpl-form-no-bg" name="Place" placeholder="" >
+                                            <small></small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="user-email" class="am-u-sm-3 am-form-label">生产日期 <span class="tpl-form-line-small-title">Date of production</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="am-form-field tpl-form-no-bg" name="UnitPrice" placeholder="" >
+                                            <small></small>
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <!-- 卖货 -->
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">卖货</div>
+                                <div class="widget-function am-fr">
+                                    <a href="javascript:;" class="am-icon-cog"></a>
+                                </div>
+                            </div>
+                            <div class="widget-body am-fr">
+
+                                <form class="am-form tpl-form-border-form tpl-form-border-br" method="post" action="/admin/sell">
+                                    <div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label">商品ID <span class="tpl-form-line-small-title">Commodity ID</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" name="ID" pattern="^[0-9]+$" placeholder="">
+                                            <small></small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label">商品类ID <span class="tpl-form-line-small-title">Category ID</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" name="Category" pattern="^[0-9]+$" placeholder="">
+                                            <small></small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-3 am-form-label">超市ID <span class="tpl-form-line-small-title">Store ID</span></label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" name="StoreID" pattern="^[0-9]+$" placeholder="">
+                                            <small></small>
+                                        </div>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+{% endblock %}
