@@ -10,6 +10,8 @@ orgName='Org1'
 peers=["peer0.org1.example.com","peer1.org1.example.com"]
 channel_name="mychannel"
 user_cc='users'
+category_cc='category'
+commodity_cc='commodity'
 
 
 
@@ -44,6 +46,7 @@ def info(message):
 #处理注册
 @user_bp.route('/register', methods=['POST'])
 def register():
+    print(request.form)
     user = request.form['ID']
     pwd = request.form['Password']
     res = requests.post("http://localhost:4000/register",
@@ -126,5 +129,90 @@ def logout():
     return resp
 
 
+#处理查询商品
+@user_bp.route('/query', methods=['POST'])
+def query_commodity():
+    print(request.form)
+    # 参数
+    token = request.cookies.get('token')
+    headers = {"authorization": "Bearer " + token, "content-type": "application/json"}
+
+    #查询commodity
+    data = {
+        "peers": peers,
+        "fcn": "query",
+        "args": [request.form['ID']]
+    }
+    # post
+    try:
+        res = requests.post("http://localhost:4000/channels/%s/chaincodes/%s" % (channel_name, commodity_cc), data=json.dumps(data),
+                        headers=headers)
+    except Exception as e:
+        return render_template("error.html", message=e)
+    if res.status_code != 200:
+        return render_template("error.html", message="status_code: " + str(res.status_code) + res.text)
+    try:
+        restext = json.loads(res.text)
+        print(restext)
+        if restext['success'] != True:
+            return render_template("error.html", message=restext['message'])
+        #return redirect(url_for("admin.info", message=restext['message']))
+    except:
+        return render_template("error.html", message=res.text)
+    category=restext['message']['Category']
+    storeID=restext['message']['StoreID']
+    # 查询category
+    data = {
+        "peers": peers,
+        "fcn": "query",
+        "args": [category,storeID]
+    }
+    # post
+    try:
+        res2 = requests.post("http://localhost:4000/channels/%s/chaincodes/%s" % (channel_name, category_cc),
+                            data=json.dumps(data),
+                            headers=headers)
+    except Exception as e:
+        return render_template("error.html", message=e)
+    if res2.status_code != 200:
+        return render_template("error.html", message="status_code: " + str(res2.status_code) + res2.text)
+
+    try:
+        res2text = json.loads(res2.text)
+        print(res2text)
+        if res2text['success'] != True:
+            return render_template("error.html", message=res2text['message'])
+        return redirect(url_for("admin.info", message=restext['message']+'\n'+res2text['message']))
+    except:
+        return render_template("error.html", message=res.text+'\n'+res2.text)
 
 
+#查询商品处理
+@user_bp.route('/query_category', methods=['POST'])
+def query_category():
+    print(request.form)
+    #参数
+    token = request.cookies.get('token')
+    headers = {"authorization": "Bearer "+token, "content-type": "application/json"}
+
+    chaincode_name="category"
+    data = {
+        "peers": peers,
+        "fcn": "query",
+        "args": [request.form['id'], request.form['store_id']]
+    }
+    #post
+    res=requests.post("http://localhost:4000/channels/%s/chaincodes/%s"%(channel_name,chaincode_name),data=json.dumps(data),headers=headers)
+
+    if res.status_code != 200:
+        return res.text
+        #return render_template("error.html", message="status_code: " + str(res.status_code) + res.text)
+    print(res.text)
+    try:
+        restext = json.loads(res.text)
+        print(restext)
+        if restext['success'] != True:
+            return render_template("error.html", message=restext['message'])
+        return redirect(url_for("admin.info", message=restext['message']))
+    except:
+        return render_template("error.html", message=res.text)

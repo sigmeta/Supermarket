@@ -132,7 +132,7 @@ func (t *CommodityChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Respons
 	if function == "insert" {
 		// 插入信息
 		return t.insert(stub, args)
-	} else if function == "queryByID" {
+	} else if function == "query" {
 		// 根据编号查询
 		return t.queryByID(stub, args)
 	} else if function == "delete" {

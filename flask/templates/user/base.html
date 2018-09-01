@@ -70,7 +70,7 @@
 
                         <!-- 退出 -->
                         <li class="am-text-sm">
-                            <a href="/admin/logout">
+                            <a href="/user/logout">
                                 <span class="am-icon-sign-out"></span> 退出
                             </a>
                         </li>
@@ -112,12 +112,12 @@
             <!-- 菜单 -->
             <ul class="sidebar-nav">
                 <li class="sidebar-nav-link">
-                    <a href="/admin" {% if request.endpoint=="admin.index" %}class="active"{% endif %}>
+                    <a href="/user" {% if request.endpoint=="user.index" %}class="active"{% endif %}>
                         <i class="am-icon-home sidebar-nav-link-logo"></i> 首页
                     </a>
                 </li>
                 <li class="sidebar-nav-link">
-                    <a href="/admin/purchase" {% if request.endpoint=="admin.purchase" %}class="active"{% endif %}>
+                    <a href="#" {% if request.endpoint=="admin.purchase" %}class="active"{% endif %}>
                         <i class="am-icon-table sidebar-nav-link-logo"></i> 进货
                     </a>
                 </li>
@@ -141,18 +141,18 @@
 
                 <li class="sidebar-nav-heading">Page<span class="sidebar-nav-heading-info"> 常用页面</span></li>
                 <li class="sidebar-nav-link">
-                    <a href="/admin/signup">
+                    <a href="/user/signup">
                         <i class="am-icon-clone sidebar-nav-link-logo"></i> 注册
                         <span class="am-badge am-badge-secondary sidebar-nav-link-logo-ico am-round am-fr am-margin-right-sm">6</span>
                     </a>
                 </li>
                 <li class="sidebar-nav-link">
-                    <a href="/admin/login">
+                    <a href="/user/login">
                         <i class="am-icon-key sidebar-nav-link-logo"></i> 登录
                     </a>
                 </li>
                 <li class="sidebar-nav-link">
-                    <a href="/admin/error">
+                    <a href="/user/error">
                         <i class="am-icon-tv sidebar-nav-link-logo"></i> 404错误
                     </a>
                 </li>
