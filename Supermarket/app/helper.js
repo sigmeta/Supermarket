@@ -48,7 +48,7 @@ async function getClientForOrg (userorg, username) {
 	// nothing will actually be replaced.
 	// This will also set an admin identity because the organization defined in the
 	// client section has one defined
-	client.loadFromConfig(hfc.getConfigSetting(userorg+config));
+	//client.loadFromConfig(hfc.getConfigSetting(userorg+config));
 
 	// this will create both the state store and the crypto store based
 	// on the settings in the client section of the connection profile
@@ -122,25 +122,55 @@ var getRegisteredUser = async function(username, userOrg, password, isJson) {
 
 var loginUser = async function(username, userOrg, password, isJson) {
     try {
-        var client = await getClientForOrg(userOrg);
-        logger.debug('Successfully initialized the credential stores');
+        let config = '-connection-profile-path';
+        // build a client context and load it with a connection profile
+        // lets only load the network settings and save the client for later
+        let conset= await hfc.getConfigSetting('network'+config);
+        var client = await hfc.loadFromConfig(conset);
+        await client.initCredentialStores();
+        logger.debug(client.toString());
+        let caClient = await client.getCertificateAuthority();
+
+        logger.debug(caClient.toString());
         // client can now act as an agent for organization Org1
         // first check to see if the user is already enrolled
-        var user = await client.getUserContext(username, true);
+
+        let sid=await caClient.enroll({enrollmentID:username,enrollmentSecret:password})
+        logger.debug('####Successfully enroll');
+        logger.debug(sid);
+
+        var user = await client.getUserContext({username:username, password:password});
+        logger.debug(user);
+
         if (user && user.isEnrolled()) {
             logger.info('Successfully loaded member from persistence');
             logger.info(user.toString());
             logger.info(user._enrollmentSecret);
             if (user._enrollmentSecret==password){
-				var response = {
-					success: true,
-					secret: user._enrollmentSecret,
-					message: username + ' enrolled Successfully',
-				};
-				return response;
-			}else{
+                var response = {
+                    success: true,
+                    secret: user._enrollmentSecret,
+                    message: username + ' enrolled Successfully',
+                };
+                return response;
+            }else{
                 throw new Error('password is not correct ');
-			}
+            }
+        } else {
+            user = await client.setUserContext({username:username, password:password});
+            user._enrollmentSecret = password;
+            await client.setUserContext(user);
+        }
+        if(user && user.isEnrolled) {
+            logger.debug(user);
+            if (isJson && isJson === true) {
+                var response = {
+                    success: true,
+                    secret: user._enrollmentSecret,
+                    message: username + ' enrolled Successfully',
+                };
+                return response;
+            }
         } else {
             throw new Error('User was not enrolled ');
         }

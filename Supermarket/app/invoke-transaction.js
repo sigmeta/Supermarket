@@ -175,7 +175,9 @@ var invokeChaincode = async function(peerNames, channelName, chaincodeName, fcn,
         logger.error(proposalResponses[0]);
 		//throw new Error(message);
 		//let res={"success":false,"message":proposalResponses[0].response}
-
+        if(proposalResponses[0]&&proposalResponses[0].response&&proposalResponses[0].response.message){
+            message=proposalResponses[0].response.message
+        }
         let res={"success":false,"message":message};
         return res;
 	}

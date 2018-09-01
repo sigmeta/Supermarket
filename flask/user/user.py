@@ -2,14 +2,14 @@ from flask import Blueprint
 from flask import (Blueprint, flash, g, redirect, render_template, request, session, url_for, make_response)
 import requests
 import json
-
+import time
 
 user_bp = Blueprint('user', __name__)
 
-orgName='Org1'
-peers=["peer0.org1.example.com","peer1.org1.example.com"]
-channel_name="mychannel"
-user_cc='users'
+orgName='store1'
+peers=["peer1.store1.aliyunbaas.com:31111"]
+channel_name="first-channel"
+user_cc='usercc'
 category_cc='category'
 commodity_cc='commodity'
 
@@ -21,7 +21,36 @@ commodity_cc='commodity'
 def index():
     if not request.cookies.get("username"):
         return render_template("user/login.html")
-    return render_template("user/index.html")
+
+    token = request.cookies.get('token')
+    print(token)
+    headers = {"authorization": "Bearer " + token, "content-type": "application/json"}
+
+    data = {
+        "peers": peers,
+        "fcn": "queryByID",
+        "args": [request.cookies.get('username')]
+    }
+    # post
+    try:
+        res = requests.post("http://localhost:4000/channels/%s/chaincodes/%s" % (channel_name, user_cc),
+                             data=json.dumps(data), headers=headers)
+    except Exception as e:
+        return render_template("user/error.html", message=e)
+
+    if res.status_code != 200:
+        return render_template("user/error.html", message="status_code: " + str(res.status_code) + res.text)
+
+    try:
+        restext = json.loads(res.text)
+        print(restext)
+        if restext['success'] != True:
+            return render_template("user/error.html", message=restext['message'])
+        # return redirect(url_for("user.info", message=res2text['message']))
+    except:
+        return render_template("user/error.html", message=res.text)
+
+    return render_template("user/index.html",user_info=json.loads(restext['message']))
 
 
 #注册页
@@ -33,7 +62,7 @@ def signup():
 #错误页面
 @user_bp.route('/error/<message>')
 def error(message):
-    return render_template("user/error.html",message=message)
+    return render_template("user/user/error.html",message=message)
 
 
 #信息页面
@@ -49,22 +78,22 @@ def register():
     print(request.form)
     user = request.form['ID']
     pwd = request.form['Password']
-    res = requests.post("http://localhost:4000/register",
-                        "username=%s&orgName=%s&password=%s" % (user, orgName, pwd),
+    org = orgName
+    res = requests.post("http://localhost:4000/users",
+                        "username=%s&orgName=%s&password=%s" % (user, org, pwd),
                         headers={"content-type": "application/x-www-form-urlencoded"})
     if res.status_code != 200:
-        return render_template("error.html", message="status_code: " + str(res.status_code) + res.text)
+        return render_template("user/error.html", message="status_code: " + str(res.status_code) + res.text)
     restext = json.loads(res.text)
     print(restext)
     if restext['success'] != True:
-        return render_template("error.html", message=restext['message'])
-    resp = make_response(redirect("user"))
-    resp.set_cookie('username', user, max_age=3600)
-    resp.set_cookie('token', restext['token'], max_age=3600)
+        return render_template("user/error.html", message=restext['message'])
 
     #写入用户信息
-
-    headers = {"authorization": "Bearer " + restext['token'], "content-type": "application/json"}
+    print(request.form)
+    token=restext['token']
+    print(token)
+    headers = {"authorization": "Bearer " + token, "content-type": "application/json"}
 
     data = {
         "peers": peers,
@@ -76,20 +105,23 @@ def register():
         res2 = requests.post("http://localhost:4000/channels/%s/chaincodes/%s" % (channel_name, user_cc),
                         data=json.dumps(data), headers=headers)
     except Exception as e:
-        return render_template("error.html",message=e)
+        return render_template("user/error.html",message=e)
 
     if res2.status_code != 200:
-        return render_template("error.html", message="status_code: " + str(res2.status_code) + res2.text)
+        return render_template("user/error.html", message="status_code: " + str(res2.status_code) + res2.text)
 
     try:
         res2text = json.loads(res2.text)
         print(res2text)
         if res2text['success'] != True:
-            return render_template("error.html", message=res2text['message'])
+            return render_template("user/error.html", message=res2text['message'])
         #return redirect(url_for("user.info", message=res2text['message']))
     except:
-        return render_template("error.html", message=res2.text)
+        return render_template("user/error.html", message=res2.text)
 
+    resp = make_response(redirect("user"))
+    resp.set_cookie('username', user, max_age=3600)
+    resp.set_cookie('token', restext['token'], max_age=3600)
     return resp
 
 
@@ -108,11 +140,11 @@ def login():
                           "username=%s&orgName=%s&password=%s"%(user,org,pwd),
                          headers={"content-type": "application/x-www-form-urlencoded"})
         if res.status_code != 200:
-            return render_template("error.html",message="status_code: "+str(res.status_code)+res.text)
+            return render_template("user/error.html",message="status_code: "+str(res.status_code)+res.text)
         restext=json.loads(res.text)
         print(restext)
         if restext['success']!=True:
-            return render_template("error.html",message=restext['message'])
+            return render_template("user/error.html",message=restext['message'])
 
         resp = make_response(redirect("user"))
         resp.set_cookie('username',user, max_age=3600)
@@ -140,7 +172,7 @@ def query_commodity():
     #查询commodity
     data = {
         "peers": peers,
-        "fcn": "query",
+        "fcn": "queryByID",
         "args": [request.form['ID']]
     }
     # post
@@ -148,17 +180,17 @@ def query_commodity():
         res = requests.post("http://localhost:4000/channels/%s/chaincodes/%s" % (channel_name, commodity_cc), data=json.dumps(data),
                         headers=headers)
     except Exception as e:
-        return render_template("error.html", message=e)
+        return render_template("user/error.html", message=e)
     if res.status_code != 200:
-        return render_template("error.html", message="status_code: " + str(res.status_code) + res.text)
+        return render_template("user/error.html", message="status_code: " + str(res.status_code) + res.text)
     try:
         restext = json.loads(res.text)
         print(restext)
         if restext['success'] != True:
-            return render_template("error.html", message=restext['message'])
+            return render_template("user/error.html", message=restext['message'])
         #return redirect(url_for("admin.info", message=restext['message']))
     except:
-        return render_template("error.html", message=res.text)
+        return render_template("user/error.html", message=res.text)
     category=restext['message']['Category']
     storeID=restext['message']['StoreID']
     # 查询category
@@ -173,18 +205,18 @@ def query_commodity():
                             data=json.dumps(data),
                             headers=headers)
     except Exception as e:
-        return render_template("error.html", message=e)
+        return render_template("user/error.html", message=e)
     if res2.status_code != 200:
-        return render_template("error.html", message="status_code: " + str(res2.status_code) + res2.text)
+        return render_template("user/error.html", message="status_code: " + str(res2.status_code) + res2.text)
 
     try:
         res2text = json.loads(res2.text)
         print(res2text)
         if res2text['success'] != True:
-            return render_template("error.html", message=res2text['message'])
-        return redirect(url_for("admin.info", message=restext['message']+'\n'+res2text['message']))
+            return render_template("user/error.html", message=res2text['message'])
+        return redirect(url_for("user.info", message=restext['message']+'\n'+res2text['message']))
     except:
-        return render_template("error.html", message=res.text+'\n'+res2.text)
+        return render_template("user/error.html", message=res.text+'\n'+res2.text)
 
 
 #查询商品处理
@@ -195,24 +227,23 @@ def query_category():
     token = request.cookies.get('token')
     headers = {"authorization": "Bearer "+token, "content-type": "application/json"}
 
-    chaincode_name="category"
     data = {
         "peers": peers,
         "fcn": "query",
         "args": [request.form['id'], request.form['store_id']]
     }
     #post
-    res=requests.post("http://localhost:4000/channels/%s/chaincodes/%s"%(channel_name,chaincode_name),data=json.dumps(data),headers=headers)
+    res=requests.post("http://localhost:4000/channels/%s/chaincodes/%s"%(channel_name,category_cc),data=json.dumps(data),headers=headers)
 
     if res.status_code != 200:
         return res.text
-        #return render_template("error.html", message="status_code: " + str(res.status_code) + res.text)
+        #return render_template("user/error.html", message="status_code: " + str(res.status_code) + res.text)
     print(res.text)
     try:
         restext = json.loads(res.text)
         print(restext)
         if restext['success'] != True:
-            return render_template("error.html", message=restext['message'])
-        return redirect(url_for("admin.info", message=restext['message']))
+            return render_template("user/error.html", message=restext['message'])
+        return redirect(url_for("user.info", message=restext['message']))
     except:
-        return render_template("error.html", message=res.text)
+        return render_template("user/error.html", message=res.text)

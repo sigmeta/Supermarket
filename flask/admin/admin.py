@@ -7,8 +7,9 @@ import requests
 admin_bp = Blueprint('admin', __name__, template_folder='templates',
                      static_folder='static')
 
-peers=["peer0.org1.example.com","peer1.org1.example.com"]
-channel_name="mychannel"
+orgName='store1'
+peers=["peer1.store1.aliyunbaas.com:31111"]
+channel_name="first-channel"
 commodity_cc="commodity"
 category_cc="category"
 #channel_name="first-channel"
@@ -56,7 +57,7 @@ def purchase():
 def register():
     user = request.form['name']
     pwd = request.form['password']
-    org = request.form['orgName']
+    org = orgName
     res = requests.post("http://localhost:4000/register",
                         "username=%s&orgName=%s&password=%s" % (user, org, pwd),
                         headers={"content-type": "application/x-www-form-urlencoded"})
@@ -83,7 +84,7 @@ def login():
         #print(request.form)
         user = request.form['username']
         pwd = request.form['password']
-        org = request.form['orgName']
+        org = orgName
         res=requests.post("http://localhost:4000/users",
                           "username=%s&orgName=%s&password=%s"%(user,org,pwd),
                          headers={"content-type": "application/x-www-form-urlencoded"})
