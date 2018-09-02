@@ -19,9 +19,9 @@ peers:
         Gh8YRuEv4xmNmhtvc6H7xny7hhCZ
         -----END CERTIFICATE-----
     grpcOptions:
-      allow-insecure: false
-      fail-fast: false
-      keep-alive-permit: false
+      allow-insecure: "false"
+      fail-fast: "false"
+      keep-alive-permit: "false"
       keep-alive-time: 0s
       keep-alive-timeout: 20s
       ssl-target-name-override: peer1.store1.aliyunbaas.com
@@ -45,9 +45,9 @@ peers:
         Gh8YRuEv4xmNmhtvc6H7xny7hhCZ
         -----END CERTIFICATE-----
     grpcOptions:
-      allow-insecure: false
-      fail-fast: false
-      keep-alive-permit: false
+      allow-insecure: "false"
+      fail-fast: "false"
+      keep-alive-permit: "false"
       keep-alive-time: 0s
       keep-alive-timeout: 20s
       ssl-target-name-override: peer2.store1.aliyunbaas.com
@@ -81,9 +81,9 @@ orderers:
         1TayL34nEV8DQabQ4YjaYCmt5Po=
         -----END CERTIFICATE-----
     grpcOptions:
-      allow-insecure: false
-      fail-fast: false
-      keep-alive-permit: false
+      allow-insecure: "false"
+      fail-fast: "false"
+      keep-alive-permit: "false"
       keep-alive-time: 0s
       keep-alive-timeout: 20s
       ssl-target-name-override: orderer1.supermarket.aliyunbaas.com
@@ -106,9 +106,9 @@ orderers:
         1TayL34nEV8DQabQ4YjaYCmt5Po=
         -----END CERTIFICATE-----
     grpcOptions:
-      allow-insecure: false
-      fail-fast: false
-      keep-alive-permit: false
+      allow-insecure: "false"
+      fail-fast: "false"
+      keep-alive-permit: "false"
       keep-alive-time: 0s
       keep-alive-timeout: 20s
       ssl-target-name-override: orderer2.supermarket.aliyunbaas.com
@@ -131,9 +131,9 @@ orderers:
         1TayL34nEV8DQabQ4YjaYCmt5Po=
         -----END CERTIFICATE-----
     grpcOptions:
-      allow-insecure: false
-      fail-fast: false
-      keep-alive-permit: false
+      allow-insecure: "false"
+      fail-fast: "false"
+      keep-alive-permit: "false"
       keep-alive-time: 0s
       keep-alive-timeout: 20s
       ssl-target-name-override: orderer3.supermarket.aliyunbaas.com
