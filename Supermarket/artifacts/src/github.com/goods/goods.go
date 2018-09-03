@@ -4,8 +4,10 @@
 每个商品有单独编号，用于记录进货时间等信息
 */
 
-package main
 
+
+package main
+/*
 import (
 	"encoding/json"
 	"fmt"
@@ -35,6 +37,7 @@ type chaincodeRet struct {
 // GoodsChaincode example Goods Chaincode implementation
 type GoodsChaincode struct {
 }
+
 
 // response message format
 func getRetByte(code int, des string) []byte {
@@ -276,3 +279,4 @@ func main() {
 		logger.Errorf("Error starting Goods chaincode: %s", err)
 	}
 }
+*/
